@@ -1,7 +1,8 @@
 import type { ConnectorEvent, CliDefinition, CliToolStatus, ConnectorDefinition, ConnectorId, PersistedProviderStatus, PersistenceFailure, Readiness, RemoteControlWorkSnapshot, SecurityControlSnapshot, Settings, WebhookEndpoint, SecretRotationMetadata } from './types'
 import { providerStatusView } from './provider-status'
 
-export type DoctorStatus = 'ok' | 'warning' | 'error' | 'checking'
+// 'off' is an optional feature the person has not turned on: listed, but never counted as a problem.
+export type DoctorStatus = 'ok' | 'warning' | 'error' | 'checking' | 'off'
 export type DoctorArea = 'models' | 'connectors' | 'remote' | 'terminals' | 'security'
 
 export interface ProbeState<T = unknown> {
@@ -21,6 +22,7 @@ export interface DoctorCheck {
 }
 
 export interface DoctorSummary {
+  off: number
   ok: number
   warning: number
   error: number
@@ -187,9 +189,9 @@ function sourceCheck(
   section = 'connectors',
 ): DoctorCheck {
   const checkId = `connector:${id === 'docs' ? 'docs' : id}`
-  if (!sources.length) return check(checkId, 'connectors', title, 'warning', emptyDetail, section, 'Configure')
+  if (!sources.length) return check(checkId, 'connectors', title, 'off', emptyDetail, section, 'Set up')
   const enabled = sources.filter((source) => source.enabled !== false)
-  if (!enabled.length) return check(checkId, 'connectors', title, 'warning', `${title} has sources, but none are enabled.`, section, 'Enable')
+  if (!enabled.length) return check(checkId, 'connectors', title, 'off', `${title} has sources, but none are enabled.`, section, 'Enable')
   const errored = enabled.find((source) => source.lastError)
   if (errored) return check(checkId, 'connectors', title, 'error', `${errored.label || title}: ${errored.lastError}`, section, 'Open')
   const missing = enabled.map((source) => ready(source)).find(Boolean)
@@ -263,7 +265,9 @@ export function buildReadinessDoctor(input: ReadinessDoctorInput): DoctorCheck[]
           out.push(check(`provider:${key}`, 'models', title, 'ok', readyDetail ? `Ready: ${readyDetail}` : 'Ready.', 'models'))
         }
       } else {
-        out.push(check(`provider:${key}`, 'models', title, 'error', probe.value?.message || 'Provider is not ready.', 'models', 'Fix'))
+        // A provider that isn't ready and isn't in use is simply not set up yet.
+        const inUse = provider.id === s.activeProviderId
+        out.push(check(`provider:${key}`, 'models', title, inUse ? 'error' : 'off', probe.value?.message || 'Provider is not ready.', 'models', inUse ? 'Fix' : 'Set up'))
       }
     }
   }
@@ -306,7 +310,7 @@ export function buildReadinessDoctor(input: ReadinessDoctorInput): DoctorCheck[]
     else if (s.botControl.telegram.lastError) out.push(check('connector:telegram', 'connectors', 'Telegram bot', 'error', s.botControl.telegram.lastError, 'connectors', 'Open'))
     else out.push(proofVerdict('telegram', 'Telegram bot', 'Enabled with chat and sender allowlists.', proof, 'connectors', 'connector:telegram'))
   } else {
-    out.push(check('connector:telegram', 'connectors', 'Telegram bot', 'warning', 'Telegram bot control is disabled.', 'connectors', 'Configure'))
+    out.push(check('connector:telegram', 'connectors', 'Telegram bot', 'off', 'Telegram bot control is disabled.', 'connectors', 'Set up'))
   }
 
   if (s.botControl.whatsapp.enabled) {
@@ -329,7 +333,7 @@ export function buildReadinessDoctor(input: ReadinessDoctorInput): DoctorCheck[]
       ? check('connector:whatsapp', 'connectors', 'WhatsApp bridge', 'error', bad.lastError || 'WhatsApp bridge error.', 'connectors', 'Open')
       : proofVerdict('whatsapp', 'WhatsApp bridge', 'At least one bridge account is enabled.', proof, 'connectors', 'connector:whatsapp'))
   } else {
-    out.push(check('connector:whatsapp', 'connectors', 'WhatsApp bridge', 'warning', 'WhatsApp bridge has no enabled paired accounts.', 'connectors', 'Pair'))
+    out.push(check('connector:whatsapp', 'connectors', 'WhatsApp bridge', 'off', 'WhatsApp bridge has no enabled paired accounts.', 'connectors', 'Pair'))
   }
 
   if (s.controller.enabled) {
@@ -337,11 +341,11 @@ export function buildReadinessDoctor(input: ReadinessDoctorInput): DoctorCheck[]
       ? check('connector:controller', 'connectors', 'Controller', 'error', s.controller.lastError, 'security', 'Open')
       : check('connector:controller', 'connectors', 'Controller', 'ok', 'Current-window capture is enabled.', 'security'))
   } else {
-    out.push(check('connector:controller', 'connectors', 'Controller', 'warning', 'Controller is disabled.', 'security', 'Configure'))
+    out.push(check('connector:controller', 'connectors', 'Controller', 'off', 'Controller is disabled.', 'security', 'Set up'))
   }
 
   const studio = input.studioRemote
-  if (!studio || !studio.enabled) out.push(check('remote:studio', 'remote', 'This Mac remote control', 'warning', 'Desktop remote control is disabled.', 'orchestrator', 'Enable'))
+  if (!studio || !studio.enabled) out.push(check('remote:studio', 'remote', 'This Mac remote control', 'off', 'Desktop remote control is disabled.', 'orchestrator', 'Enable'))
   else if (studio.lastError) out.push(check('remote:studio', 'remote', 'This Mac remote control', 'error', studio.lastError, 'orchestrator', 'Open'))
   else if (!studio.listening) out.push(check('remote:studio', 'remote', 'This Mac remote control', 'error', 'Remote control is enabled but not listening.', 'orchestrator', 'Open'))
   else out.push(check('remote:studio', 'remote', 'This Mac remote control', 'ok', `Listening${studio.url ? ` at ${studio.url}` : ''}${studio.clients ? ` · ${plural(studio.clients, 'client')}` : ''}.`, 'orchestrator'))
@@ -349,7 +353,7 @@ export function buildReadinessDoctor(input: ReadinessDoctorInput): DoctorCheck[]
   for (const host of s.remoteOrchestrators ?? []) {
     const name = host.name || 'Orchestrator'
     if (!host.enabled) {
-      out.push(check(`remote:${host.id}`, 'remote', name, 'warning', 'Host is saved but disabled.', 'orchestrator', 'Enable'))
+      out.push(check(`remote:${host.id}`, 'remote', name, 'off', 'Host is saved but disabled.', 'orchestrator', 'Enable'))
       continue
     }
     if (!hasValue(host.serverUrl) || !hasSecret(host.authToken)) {
@@ -568,7 +572,7 @@ export function buildReadinessDoctor(input: ReadinessDoctorInput): DoctorCheck[]
 }
 
 export function summarizeDoctor(checks: DoctorCheck[]): DoctorSummary {
-  const summary: DoctorSummary = { ok: 0, warning: 0, error: 0, checking: 0, total: checks.length }
+  const summary: DoctorSummary = { off: 0, ok: 0, warning: 0, error: 0, checking: 0, total: checks.length }
   for (const item of checks) summary[item.status] += 1
   return summary
 }

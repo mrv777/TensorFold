@@ -1,0 +1,18 @@
+{
+  "Nothing needs you right now. Approvals, running work and connector problems will show up here.": "今は対応が必要なものはありません。承認、実行中の作業、コネクタの問題はここに表示されます。",
+  "Knowledge": "知識",
+  "Show sidebar": "サイドバーを表示",
+  "Show sidebar: projects, tasks and every tool": "サイドバーを表示: プロジェクト、タスク、すべてのツール",
+  "Not working": "動作していません",
+  "Not set up": "未設定",
+  "Checks for the models, connections and tools you use.": "使用中のモデル、接続、ツールのチェックです。",
+  "1 thing needs your attention.": "1 件の対応が必要です。",
+  "{value0} things need your attention.": "{value0} 件の対応が必要です。",
+  "Everything you use is working.": "使用中のものはすべて正常に動作しています。",
+  "Check again": "再チェック",
+  "1 check passing": "1 件のチェックに合格",
+  "{value0} checks passing": "{value0} 件のチェックに合格",
+  "1 optional feature not set up": "未設定のオプション機能 1 件",
+  "{value0} optional features not set up": "未設定のオプション機能 {value0} 件",
+  "Loads when you send": "送信時に読み込みます"
+}

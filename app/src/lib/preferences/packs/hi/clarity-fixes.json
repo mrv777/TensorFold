@@ -1,0 +1,18 @@
+{
+  "Nothing needs you right now. Approvals, running work and connector problems will show up here.": "अभी आपके लिए कुछ भी लंबित नहीं है। मंजूरियाँ, चल रहा काम और कनेक्टर की समस्याएँ यहाँ दिखेंगी।",
+  "Knowledge": "ज्ञान",
+  "Show sidebar": "साइडबार दिखाएँ",
+  "Show sidebar: projects, tasks and every tool": "साइडबार दिखाएँ: प्रोजेक्ट, टास्क और सभी टूल",
+  "Not working": "काम नहीं कर रहा",
+  "Not set up": "सेट नहीं है",
+  "Checks for the models, connections and tools you use.": "आपके इस्तेमाल किए जाने वाले मॉडल, कनेक्शन और टूल की जाँच।",
+  "1 thing needs your attention.": "1 चीज़ पर आपका ध्यान चाहिए।",
+  "{value0} things need your attention.": "{value0} चीज़ों पर आपका ध्यान चाहिए।",
+  "Everything you use is working.": "आप जो कुछ इस्तेमाल करते हैं, सब ठीक काम कर रहा है।",
+  "Check again": "फिर से जाँचें",
+  "1 check passing": "1 जाँच सफल",
+  "{value0} checks passing": "{value0} जाँचें सफल",
+  "1 optional feature not set up": "1 वैकल्पिक सुविधा सेट नहीं है",
+  "{value0} optional features not set up": "{value0} वैकल्पिक सुविधाएँ सेट नहीं हैं",
+  "Loads when you send": "भेजने पर लोड होगा"
+}

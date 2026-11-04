@@ -1,0 +1,18 @@
+{
+  "Nothing needs you right now. Approvals, running work and connector problems will show up here.": "Nihil nunc te requirit. Approbationes, opus currens et vitia connexionum hic apparebunt.",
+  "Knowledge": "Cognitio",
+  "Show sidebar": "Fasciam lateralem ostende",
+  "Show sidebar: projects, tasks and every tool": "Fasciam lateralem ostende: incepta, opera et omnia instrumenta",
+  "Not working": "Non operatur",
+  "Not set up": "Non institutum",
+  "Checks for the models, connections and tools you use.": "Probationes exemplarium, conexionum et instrumentorum quibus uteris.",
+  "1 thing needs your attention.": "Una res animum tuum requirit.",
+  "{value0} things need your attention.": "Res animum tuum requirentes: {value0}",
+  "Everything you use is working.": "Omnia quibus uteris recte operantur.",
+  "Check again": "Iterum proba",
+  "1 check passing": "Una probatio transacta",
+  "{value0} checks passing": "Probationes transactae: {value0}",
+  "1 optional feature not set up": "Una facultas optionalis non instituta",
+  "{value0} optional features not set up": "Facultates optionales non institutae: {value0}",
+  "Loads when you send": "Cum mittis oneratur"
+}

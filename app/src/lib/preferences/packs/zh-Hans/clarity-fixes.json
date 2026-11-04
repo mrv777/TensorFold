@@ -1,0 +1,18 @@
+{
+  "Nothing needs you right now. Approvals, running work and connector problems will show up here.": "目前没有需要你处理的事项。审批、进行中的工作和连接器问题会显示在这里。",
+  "Knowledge": "知识来源",
+  "Show sidebar": "显示侧边栏",
+  "Show sidebar: projects, tasks and every tool": "显示侧边栏：项目、任务和所有工具",
+  "Not working": "无法使用",
+  "Not set up": "未设置",
+  "Checks for the models, connections and tools you use.": "检查你正在使用的模型、连接和工具。",
+  "1 thing needs your attention.": "有 1 项需要你处理。",
+  "{value0} things need your attention.": "有 {value0} 项需要你处理。",
+  "Everything you use is working.": "你使用的一切都运行正常。",
+  "Check again": "重新检查",
+  "1 check passing": "1 项检查通过",
+  "{value0} checks passing": "{value0} 项检查通过",
+  "1 optional feature not set up": "1 项可选功能未设置",
+  "{value0} optional features not set up": "{value0} 项可选功能未设置",
+  "Loads when you send": "发送时加载"
+}

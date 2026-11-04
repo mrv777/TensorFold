@@ -1,0 +1,18 @@
+{
+  "Nothing needs you right now. Approvals, running work and connector problems will show up here.": "지금은 처리할 일이 없습니다. 승인, 진행 중인 작업, 커넥터 문제가 여기에 표시됩니다.",
+  "Knowledge": "지식",
+  "Show sidebar": "사이드바 표시",
+  "Show sidebar: projects, tasks and every tool": "사이드바 표시: 프로젝트, 작업 및 모든 도구",
+  "Not working": "작동하지 않음",
+  "Not set up": "설정 안 됨",
+  "Checks for the models, connections and tools you use.": "사용 중인 모델, 연결, 도구를 확인합니다.",
+  "1 thing needs your attention.": "확인이 필요한 항목 1개가 있습니다.",
+  "{value0} things need your attention.": "확인이 필요한 항목 {value0}개가 있습니다.",
+  "Everything you use is working.": "사용 중인 모든 항목이 정상 작동합니다.",
+  "Check again": "다시 확인",
+  "1 check passing": "통과한 검사 1개",
+  "{value0} checks passing": "통과한 검사 {value0}개",
+  "1 optional feature not set up": "설정되지 않은 선택 기능 1개",
+  "{value0} optional features not set up": "설정되지 않은 선택 기능 {value0}개",
+  "Loads when you send": "보낼 때 로드됨"
+}

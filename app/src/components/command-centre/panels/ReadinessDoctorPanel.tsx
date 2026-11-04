@@ -19,9 +19,9 @@ export function ReadinessDoctorPanel(props: ReadinessDoctorPanelProps) {
   const { readinessChecks, readinessSummary, readinessTone, refreshReadiness, openReadinessSettings } = props
 
   const readinessIssues = readinessChecks
-    .filter((check) => check.status !== 'ok')
+    .filter((check) => check.status !== 'ok' && check.status !== 'off')
     .sort((a, b) => {
-      const rank = { error: 0, warning: 1, checking: 2, ok: 3 }
+      const rank = { error: 0, warning: 1, checking: 2, ok: 3, off: 4 }
       return rank[a.status] - rank[b.status] || a.area.localeCompare(b.area) || a.title.localeCompare(b.title)
     })
     .slice(0, 6)

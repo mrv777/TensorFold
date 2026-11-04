@@ -38,7 +38,7 @@ export function TitleBar({ simple = false }: { simple?: boolean }) {
       : view.name === 'home'
         ? ''
         : view.name === 'commandCentre'
-          ? tx("Assistant")
+          ? tx("Command Centre")
           : view.name.charAt(0).toUpperCase() + view.name.slice(1)
 
   if (simple) return <ChatWorkspaceHeader title={title || (view.name === 'home' ? tx("New task") : "TensorFold")} thread={thread} />
@@ -71,7 +71,7 @@ export function TitleBar({ simple = false }: { simple?: boolean }) {
         )}
         {/* No "Hand off" here: orchestrator mode already moves work
             across machines. Bundle export stays available via ⌘K → "Export this run…". */}
-        <button onClick={() => setView({ name: 'commandCentre' })} className="flex h-7 w-7 items-center justify-center rounded-lg text-ink-3 transition-colors hover:bg-surface-hover hover:text-ink" aria-label={tx("Assistant")}><Icon name="bell" size={15} /></button>
+        <button onClick={() => setView({ name: 'commandCentre' })} className="flex h-7 w-7 items-center justify-center rounded-lg text-ink-3 transition-colors hover:bg-surface-hover hover:text-ink" aria-label={tx("Command Centre")} title={tx("Command Centre")}><Icon name="bell" size={15} /></button>
         {thread && isTask && (
           <button
             onClick={() => openWorkPane('terminal')}

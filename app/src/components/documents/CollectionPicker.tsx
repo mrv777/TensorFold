@@ -36,7 +36,7 @@ export function CollectionPicker({ threadId, sourceIds, disabled = false, onChan
     finally { saving.current = false; if (owner.current === threadId) setPending(false) }
   }
   return <div className="relative min-w-0">
-    <Button size="xs" variant="ghost" disabled={disabled || pending} aria-haspopup="dialog" aria-expanded={open} onClick={() => open ? close() : void show()}>{sourceIds === undefined ? tx('Knowledge: configured collections') : tx('Knowledge: {count} collections', { count: sourceIds.length })}</Button>
+    <Button size="xs" variant="ghost" disabled={disabled || pending} aria-haspopup="dialog" aria-expanded={open} onClick={() => open ? close() : void show()}>{sourceIds === undefined ? tx('Knowledge: configured collections') : sourceIds.length ? tx('Knowledge: {count} collections', { count: sourceIds.length }) : tx('Knowledge')}</Button>
     {open && createPortal(<div className="fixed inset-0 z-[130] flex items-start justify-center bg-canvas/85 p-3 sm:p-6" onMouseDown={event => { if (event.target === event.currentTarget) close() }}><section ref={panel} role="dialog" aria-modal="true" tabIndex={-1} aria-label={tx('Choose knowledge for this chat')} className="scroll-thin max-h-full w-full max-w-lg space-y-3 overflow-y-auto rounded-xl border border-line bg-card p-4 shadow-pop outline-none">
       <h3 className="text-[13px] font-medium text-ink">{tx('Knowledge for this chat')}</h3>
       <p className="text-[12px] text-ink-3">{tx('Only selected collections can be searched by this chat. Local model and connector restrictions still apply.')}</p>

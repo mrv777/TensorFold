@@ -48,25 +48,9 @@ export function HeaderBar(props: HeaderBarProps) {
     <div className="border-b border-line px-6 py-4 xl:pr-[328px]">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <div className="mb-1 flex items-center gap-2 text-[13px] text-ink-3">
-            <Icon name="bell" size={14} />
-            <span>{tx("Operations")}</span>
-            <span className="text-ink-5">/</span>
-            <span>{snapshot ? tx("Snapshot {value0}", { value0: relativeTime(snapshot.generatedAt) }) : tx("Loading snapshot")}</span>
-          </div>
-          <h1 className="text-[20px] font-semibold tracking-[-0.02em] text-ink">{tx("Assistant")}</h1>
-          <div className="mt-1 flex flex-wrap items-center gap-2 text-[13px] text-ink-3">
-            <span>{attentionRows.length} {tx("attention items")}</span>
-            <span className="text-ink-5">/</span>
-            <span>{pendingApprovals} {tx("approvals")}</span>
-            <span className="text-ink-5">/</span>
-            <span>{liveJobs.length} {tx("live jobs")}</span>
-            <span className="text-ink-5">/</span>
-            <span>{activeMissions} {tx("missions")}</span>
-            <span className="text-ink-5">/</span>
-            <span>{connectedCount}/{connectorRows.length} {tx("connectors active")}</span>
-            <span className="text-ink-5">/</span>
-            <span>{readinessLabel}</span>
+          <h1 className="text-[20px] font-semibold tracking-[-0.02em] text-ink">{tx("Command Centre")}</h1>
+          <div className="mt-1 text-[13px] text-ink-3">
+            {snapshot ? tx("Updated {value0}", { value0: relativeTime(snapshot.generatedAt) }) : tx("Loading…")}
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">

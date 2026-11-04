@@ -1,0 +1,18 @@
+{
+  "Nothing needs you right now. Approvals, running work and connector problems will show up here.": "ตอนนี้ไม่มีอะไรที่ต้องให้คุณจัดการ การอนุมัติ งานที่กำลังทำ และปัญหาตัวเชื่อมต่อจะแสดงที่นี่",
+  "Knowledge": "ความรู้",
+  "Show sidebar": "แสดงแถบด้านข้าง",
+  "Show sidebar: projects, tasks and every tool": "แสดงแถบด้านข้าง: โครงการ งาน และเครื่องมือทั้งหมด",
+  "Not working": "ใช้งานไม่ได้",
+  "Not set up": "ยังไม่ได้ตั้งค่า",
+  "Checks for the models, connections and tools you use.": "การตรวจโมเดล การเชื่อมต่อ และเครื่องมือที่คุณใช้",
+  "1 thing needs your attention.": "มี 1 รายการที่ต้องให้คุณดู",
+  "{value0} things need your attention.": "มี {value0} รายการที่ต้องให้คุณดู",
+  "Everything you use is working.": "ทุกอย่างที่คุณใช้ทำงานได้ปกติ",
+  "Check again": "ตรวจอีกครั้ง",
+  "1 check passing": "ผ่านการตรวจ 1 รายการ",
+  "{value0} checks passing": "ผ่านการตรวจ {value0} รายการ",
+  "1 optional feature not set up": "ฟีเจอร์เสริม 1 รายการยังไม่ได้ตั้งค่า",
+  "{value0} optional features not set up": "ฟีเจอร์เสริม {value0} รายการยังไม่ได้ตั้งค่า",
+  "Loads when you send": "จะโหลดเมื่อคุณส่ง"
+}

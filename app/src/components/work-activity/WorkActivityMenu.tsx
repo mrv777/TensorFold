@@ -16,7 +16,7 @@ const kindLabels: Record<FullWorkspaceActivity['kind'], string> = {
   task: 'Task', chat: 'Chat', room: 'Room', automation: 'Routine', job: 'Background work',
 }
 
-export function WorkActivityMenu({ variant = 'toolbar' }: { variant?: 'toolbar' | 'sidebar' }) {
+export function WorkActivityMenu({ variant = 'toolbar' }: { variant?: 'toolbar' | 'sidebar' | 'icon' }) {
   const tx = useAuthoredText()
   const threads = useStore((state) => state.threads)
   const status = useStore((state) => state.status)
@@ -40,10 +40,10 @@ export function WorkActivityMenu({ variant = 'toolbar' }: { variant?: 'toolbar' 
       aria-expanded={open}
       aria-controls={open ? panelId : undefined}
       aria-label={tx("Work activity: {value0} items, {value1} need attention", { value0: activity.length, value1: needsYou })}
-      className={clsx('flex h-9 items-center gap-2 rounded-lg px-2.5 text-[13px] text-ink hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-accent', variant === 'sidebar' && 'w-full')}
+      className={clsx('flex h-9 items-center gap-2 rounded-lg px-2.5 text-[13px] text-ink hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-accent', variant === 'sidebar' && 'w-full', variant === 'icon' && 'h-8 gap-1.5 px-2')}
     >
       <Icon name="bell" size={15} className={needsYou ? 'text-warn' : 'text-ink-3'} />
-      <span className={variant === 'sidebar' ? 'flex-1 text-left' : undefined}>{tx("Work activity")}</span>
+      {variant === 'icon' ? <span className="sr-only">{tx("Work activity")}</span> : <span className={variant === 'sidebar' ? 'flex-1 text-left' : undefined}>{tx("Work activity")}</span>}
       {needsYou > 0
         ? <span className="rounded-md bg-warn/15 px-1.5 py-0.5 text-[11px] font-medium tabular-nums text-ink">{needsYou}</span>
         : activity.length > 0 && <span className="text-[12px] tabular-nums text-ink-3">{activity.length}</span>}

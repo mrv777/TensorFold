@@ -1,0 +1,18 @@
+{
+  "Nothing needs you right now. Approvals, running work and connector problems will show up here.": "Hiện không có gì cần bạn xử lý. Phê duyệt, công việc đang chạy và sự cố trình kết nối sẽ hiện ở đây.",
+  "Knowledge": "Kiến thức",
+  "Show sidebar": "Hiện thanh bên",
+  "Show sidebar: projects, tasks and every tool": "Hiện thanh bên: dự án, tác vụ và mọi công cụ",
+  "Not working": "Không hoạt động",
+  "Not set up": "Chưa thiết lập",
+  "Checks for the models, connections and tools you use.": "Kiểm tra các mô hình, kết nối và công cụ bạn dùng.",
+  "1 thing needs your attention.": "1 mục cần bạn chú ý.",
+  "{value0} things need your attention.": "{value0} mục cần bạn chú ý.",
+  "Everything you use is working.": "Mọi thứ bạn dùng đều hoạt động.",
+  "Check again": "Kiểm tra lại",
+  "1 check passing": "1 kiểm tra đạt",
+  "{value0} checks passing": "{value0} kiểm tra đạt",
+  "1 optional feature not set up": "1 tính năng tùy chọn chưa thiết lập",
+  "{value0} optional features not set up": "{value0} tính năng tùy chọn chưa thiết lập",
+  "Loads when you send": "Tải khi bạn gửi"
+}

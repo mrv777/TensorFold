@@ -30,7 +30,7 @@ export function MoreSection({ view, open, onToggle, settings, assistantSource, n
           {inAssistant && sources.map((id) => (
             <AssistantSourceRow key={id} id={id} label={SOURCE_LABEL[id]} detail={sourceDetail(settings, id)} active={assistantSource === id} onClick={() => pickSource(id)} />
           ))}
-          <NavRow icon="layers" label={tx("Rooms")} active={view.name === 'projects'} onClick={() => setView({ name: 'projects' })} />
+          <NavRow icon="layers" label={tx("All projects")} active={view.name === 'projects'} onClick={() => setView({ name: 'projects' })} />
           <NavRow icon="clock" label={tx("Automations")} active={view.name === 'automations'} badge={runningAutomations ? String(runningAutomations) : undefined} onClick={() => setView({ name: 'automations' })} />
           <NavRow icon="plug" label={tx("Plugins")} active={view.name === 'plugins'} onClick={() => setView({ name: 'plugins' })} />
           <NavRow icon="bell" label={tx("Command Centre")} active={view.name === 'commandCentre'} badge={reviewTicketCount ? String(reviewTicketCount) : undefined} onClick={() => setView({ name: 'commandCentre' })} />

@@ -36,7 +36,7 @@ for (const platform of ['linux', 'darwin', 'win32', 'browser', 'web-remote']) {
   api.platform = platform
   state.sidebarCollapsed = true
   const title = hooks.render(() => TitleBar({}))
-  const chat = hooks.render(() => ChatWorkspaceHeader({ title: 'Fixture', thread: null })).props.children[0]
+  const chat = hooks.render(() => ChatWorkspaceHeader({ title: 'Fixture', thread: null })).props.children
   const minimal = minimalHooks.render(() => MinimalWorkspace({ target: 'models', onTarget: fixture })).props.children[0]
   for (const node of [title, chat, minimal]) {
     assert.equal(hasClass(node, 'pl-[96px]'), platform !== 'linux', `${platform}: reserve traffic-light space only on unchanged platforms`)

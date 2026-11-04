@@ -187,14 +187,14 @@ export function ThreadView({ threadId, simpleLayout = false }: { threadId: strin
 
   return (
     <div className="relative flex h-full">
-      <div className="flex h-full min-w-0 flex-1 flex-col">
+      <div className="relative flex h-full min-w-0 flex-1 flex-col">
         {isTask && <TaskContextBar cwd={workspaceCwd} projectName={project?.name}
           remote={workspace?.kind === 'ssh' || !!thread.orchestratorHostId || api.platform === 'web-remote'}
           branch={git?.branch ?? null} gitAvailable={!!git} changes={changes}
           onWorkspace={() => useStore.getState().openWorkPane('details')}
           onReview={() => useStore.getState().openWorkPane('changes')}
           onTerminal={() => useStore.getState().openWorkPane('terminal')} />}
-        <div className="flex shrink-0 flex-wrap items-center justify-end gap-2 border-b border-line/50 px-4 py-1.5">
+        <div className={simpleLayout ? 'pointer-events-none absolute right-4 top-2 z-10 flex items-center gap-1 [&>*]:pointer-events-auto' : 'flex shrink-0 flex-wrap items-center justify-end gap-2 border-b border-line/50 px-4 py-1.5'}>
           <CollectionPicker key={`collections-${threadId}`} threadId={threadId} sourceIds={thread.documentSourceIds} disabled={busy || thread.status === 'running' || !!thread.bot || !!thread.phoneLocalOnly || !!thread.googleLocalOnly || !!thread.orchestratorHostId || workspace?.kind === 'ssh' || api.platform === 'web-remote' || !!selectedProvider && isExternalProvider(selectedProvider)} onChange={ids => patchThread(threadId, { documentSourceIds: ids })} />
           <ConversationOutline key={threadId} threadId={threadId} timeline={timeline} annotations={annotations} activeAssistantId={st === 'streaming' ? lastAssistantId : undefined} />
           <button type="button" className="rounded-lg px-2 py-1 text-[12px] text-ink-2 hover:bg-surface focus-visible:outline-2 focus-visible:outline-accent" onClick={() => requestConversationSearch({ scope: 'thread', threadId })}>{tx("Find in chat")}</button>

@@ -7,6 +7,7 @@ import { api } from '../../lib/ipc'
 import { useEngine } from '../../lib/engine'
 import type { EngineStatus } from '../../lib/types'
 import { repoDisplayName } from '../../lib/turn-stats-line'
+import { isBuiltInProvider } from '../../../shared/provider-trust'
 
 type ChipState = 'loaded' | 'loading' | 'stopped' | 'failed' | 'unavailable'
 
@@ -34,7 +35,16 @@ export function EngineChip({ active, onOpen }: { active: boolean; onOpen: () => 
   const status = snapshot?.status
   const state = engineChipState(status, error)
   const label = !status && error == null ? tx('Checking engine') : STATE_LABEL[state]
-  const model = state !== 'unavailable' && status?.model?.trim() ? snapshot?.installed.find((entry) => entry.repo === status.model)?.title?.trim() || repoDisplayName(status.model) : null
+  // When nothing is loaded yet, name the model the composer will load on send, so the
+  // sidebar and the composer describe the same model instead of contradicting each other.
+  const selected = useLocaleStore((s) => {
+    const provider = s.settings?.providers?.find((p) => p.id === s.settings?.activeProviderId)
+    return isBuiltInProvider(provider) ? s.settings?.activeModel?.trim() || null : null
+  })
+  const loadedRepo = state !== 'unavailable' ? status?.model?.trim() || null : null
+  const repo = loadedRepo ?? (state === 'stopped' ? selected : null)
+  const model = repo ? snapshot?.installed.find((entry) => entry.repo === repo)?.title?.trim() || repoDisplayName(repo) : null
+  const shownLabel = !loadedRepo && model && state === 'stopped' ? tx('Loads when you send') : label
   const canEject = !!status?.model?.trim() && (state === 'loaded' || state === 'loading')
   const eject = async () => {
     if (ejecting || !canEject) return
@@ -44,12 +54,12 @@ export function EngineChip({ active, onOpen }: { active: boolean; onOpen: () => 
 
   return (
     <div data-testid="sidebar-engine-status" className={clsx('no-drag group flex h-8 w-full items-center rounded-[10px] text-[13px] transition-colors', active ? 'bg-surface-hover' : 'hover:bg-surface')}>
-      <button type="button" onClick={onOpen} title={model ? `${model}: ${label}` : tx('Open Models')} className="flex h-full min-w-0 flex-1 items-center gap-2 rounded-[10px] px-2.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-accent">
+      <button type="button" onClick={onOpen} title={model ? `${model}: ${shownLabel}` : tx('Open Models')} className="flex h-full min-w-0 flex-1 items-center gap-2 rounded-[10px] px-2.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-accent">
         <span className="flex w-4 shrink-0 items-center justify-center">
           <span className={clsx('size-1.5 rounded-full', state === 'loaded' && 'bg-positive', state === 'loading' && 'animate-pulse bg-ink-3', (state === 'stopped' || state === 'unavailable' && error == null) && 'bg-ink-4', (state === 'failed' || error != null) && 'bg-danger')} />
         </span>
         <span className={clsx('min-w-0 flex-1 truncate', model ? 'text-ink' : 'text-ink-3')}>{model ?? label}</span>
-        {model && <span className="shrink-0 text-[12px] text-ink-3">{label}</span>}
+        {model && <span className="shrink-0 text-[12px] text-ink-3">{shownLabel}</span>}
       </button>
       {canEject && <button type="button" onClick={() => { void eject() }} disabled={ejecting} className="mr-1 shrink-0 rounded-md px-1.5 py-1 text-[12px] text-ink-2 opacity-0 transition-opacity hover:bg-surface-hover hover:text-ink focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-accent disabled:opacity-50 group-hover:opacity-100 group-focus-within:opacity-100">
         {ejecting ? tx('Ejecting') : tx('Eject')}

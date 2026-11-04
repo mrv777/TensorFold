@@ -6,6 +6,7 @@ import * as format from '../../lib/engine-format'
 import { engineReadiness } from '../../lib/engine-readiness'
 import { engineBaseUrl, formatTokenRate } from '../../lib/engine-workspace'
 import { repoDisplayName } from '../../lib/turn-stats-line'
+import { isBuiltInProvider } from '../../../shared/provider-trust'
 import { flowTextFor } from '../../lib/preferences/flow-catalogue'
 import * as downloads from './download-display'
 import { harness, jsx, load, nodes, settle, text } from '../reading/reading-test-harness'
@@ -161,6 +162,7 @@ const chipHooks = harness()
 let ejections = 0
 const { EngineChip } = load(path.join(__dirname, '../sidebar/EngineChip.tsx'), {
   ...shared, react: chipHooks.hooks, '../../lib/ipc': { api: { engineUnload: async () => { ejections++ } } },
+  '../../../shared/provider-trust': { isBuiltInProvider },
 })
 const chip = () => chipHooks.render(() => EngineChip({ active: false, onOpen: () => calls.push('chip-models') }))
 const pickerStatus = () => EngineStatusRow({ onOpenModels: () => calls.push('picker-models') })

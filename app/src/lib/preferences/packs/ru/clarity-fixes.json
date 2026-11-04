@@ -1,0 +1,18 @@
+{
+  "Nothing needs you right now. Approvals, running work and connector problems will show up here.": "Сейчас ничего не требует вашего внимания. Здесь появятся согласования, текущая работа и проблемы коннекторов.",
+  "Knowledge": "Знания",
+  "Show sidebar": "Показать боковую панель",
+  "Show sidebar: projects, tasks and every tool": "Показать боковую панель: проекты, задачи и все инструменты",
+  "Not working": "Не работает",
+  "Not set up": "Не настроено",
+  "Checks for the models, connections and tools you use.": "Проверки моделей, подключений и инструментов, которыми вы пользуетесь.",
+  "1 thing needs your attention.": "Одна проблема требует вашего внимания.",
+  "{value0} things need your attention.": "Требуют вашего внимания: {value0}",
+  "Everything you use is working.": "Всё, чем вы пользуетесь, работает.",
+  "Check again": "Проверить снова",
+  "1 check passing": "Пройдена 1 проверка",
+  "{value0} checks passing": "Пройдено проверок: {value0}",
+  "1 optional feature not set up": "1 дополнительная функция не настроена",
+  "{value0} optional features not set up": "Не настроено дополнительных функций: {value0}",
+  "Loads when you send": "Загрузится при отправке"
+}

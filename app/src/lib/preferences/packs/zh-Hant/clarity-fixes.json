@@ -1,0 +1,18 @@
+{
+  "Nothing needs you right now. Approvals, running work and connector problems will show up here.": "目前沒有需要你處理的事項。審批、進行中的工作和連接器問題會顯示在這裡。",
+  "Knowledge": "知識來源",
+  "Show sidebar": "顯示側邊欄",
+  "Show sidebar: projects, tasks and every tool": "顯示側邊欄：項目、任務和所有工具",
+  "Not working": "無法使用",
+  "Not set up": "未設置",
+  "Checks for the models, connections and tools you use.": "檢查你正在使用的模型、連接和工具。",
+  "1 thing needs your attention.": "有 1 項需要你處理。",
+  "{value0} things need your attention.": "有 {value0} 項需要你處理。",
+  "Everything you use is working.": "你使用的一切都運作正常。",
+  "Check again": "重新檢查",
+  "1 check passing": "1 項檢查通過",
+  "{value0} checks passing": "{value0} 項檢查通過",
+  "1 optional feature not set up": "1 項可選功能未設置",
+  "{value0} optional features not set up": "{value0} 項可選功能未設置",
+  "Loads when you send": "傳送時載入"
+}

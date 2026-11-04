@@ -21,25 +21,23 @@ const AREA_LABELS: Record<DoctorArea, string> = {
 
 const AREA_ORDER: DoctorArea[] = ['models', 'remote', 'connectors', 'terminals', 'security']
 
-const STATUS_META: Record<DoctorStatus, { label: string; icon: 'check' | 'warning' | 'refresh' | 'x'; className: string }> = {
-  ok: { get label() { return authoredText(useLocaleStore.getState().settings?.uiPreferences?.locale, "Ready") }, icon: 'check', className: 'border-positive/30 bg-positive/10 text-positive' },
-  warning: { get label() { return authoredText(useLocaleStore.getState().settings?.uiPreferences?.locale, "Needs review") }, icon: 'warning', className: 'border-warn/40 bg-warn/10 text-warn' },
-  error: { get label() { return authoredText(useLocaleStore.getState().settings?.uiPreferences?.locale, "Blocked") }, icon: 'x', className: 'border-danger/35 bg-danger/10 text-danger' },
-  checking: { get label() { return authoredText(useLocaleStore.getState().settings?.uiPreferences?.locale, "Checking") }, icon: 'refresh', className: 'border-line bg-ink-5 text-ink-3' },
+const STATUS_META: Record<DoctorStatus, { label: string; dot: string }> = {
+  ok: { get label() { return authoredText(useLocaleStore.getState().settings?.uiPreferences?.locale, "Ready") }, dot: 'bg-positive' },
+  warning: { get label() { return authoredText(useLocaleStore.getState().settings?.uiPreferences?.locale, "Needs review") }, dot: 'bg-warn' },
+  error: { get label() { return authoredText(useLocaleStore.getState().settings?.uiPreferences?.locale, "Not working") }, dot: 'bg-danger' },
+  checking: { get label() { return authoredText(useLocaleStore.getState().settings?.uiPreferences?.locale, "Checking") }, dot: 'bg-ink-4' },
+  off: { get label() { return authoredText(useLocaleStore.getState().settings?.uiPreferences?.locale, "Not set up") }, dot: 'bg-ink-5' },
 }
 
 function areaGroups(checks: DoctorCheck[]) {
   return AREA_ORDER.map((area) => ({ area, checks: checks.filter((check) => check.area === area) })).filter((group) => group.checks.length)
 }
 
-function statusPill(status: DoctorStatus) {
+function statusDot(status: DoctorStatus) {
   const meta = STATUS_META[status]
-  return (
-    <span className={clsx('inline-flex h-6 shrink-0 items-center gap-1.5 rounded-md border px-2 text-[12px] font-medium', meta.className)}>
-      {status === 'checking' ? <Spinner size={12} /> : <Icon name={meta.icon} size={12} />}
-      {meta.label}
-    </span>
-  )
+  return status === 'checking'
+    ? <span className="mt-1 flex w-3 shrink-0 justify-center"><Spinner size={11} /></span>
+    : <span className="mt-[7px] flex w-3 shrink-0 justify-center" title={meta.label}><span className={clsx('size-1.5 rounded-full', meta.dot)} /></span>
 }
 
 export function ReadinessSettings({ ctx }: { ctx: SettingsSectionContext }) {
@@ -140,7 +138,11 @@ export function ReadinessSettings({ ctx }: { ctx: SettingsSectionContext }) {
     securityControls,
   }), [ctx.draft, providerReadiness, providerStatus, localClis, remoteProbes, ctx.studioStatus, connectors, connectorEvents, webhooks, persistenceFailure, securityControls, tx])
   const summary = summarizeDoctor(checks)
-  const grouped = areaGroups(checks)
+  const problems = checks.filter((check) => check.status === 'error' || check.status === 'warning')
+  const passing = checks.filter((check) => check.status === 'ok' || check.status === 'checking')
+  const notSetUp = checks.filter((check) => check.status === 'off')
+  const [showPassing, setShowPassing] = useState(false)
+  const [showNotSetUp, setShowNotSetUp] = useState(false)
 
   const jump = (section?: string) => {
     if (section && ALL_SETTINGS_SECTIONS.some((item) => item.id === section)) ctx.goToSection(section as SettingsSection)
@@ -148,54 +150,62 @@ export function ReadinessSettings({ ctx }: { ctx: SettingsSectionContext }) {
 
   return (
     <SettingsPane>
-      <Section title={tx("Readiness")} desc={tx("Live checks for the runtime pieces TensorFold depends on.")}>
-        <div className="mb-4 grid gap-2 sm:grid-cols-4">
-          <SummaryCell label={tx("Ready")} value={summary.ok} status="ok" />
-          <SummaryCell label={tx("Review")} value={summary.warning} status="warning" />
-          <SummaryCell label={tx("Blocked")} value={summary.error} status="error" />
-          <SummaryCell label={tx("Checking")} value={summary.checking} status="checking" />
+      <Section title={tx("Readiness")} desc={tx("Checks for the models, connections and tools you use.")}>
+        <div className="mb-5 flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-2 text-[14px] text-ink">
+            <span className={clsx('size-2 shrink-0 rounded-full', problems.length ? (summary.error ? 'bg-danger' : 'bg-warn') : summary.checking ? 'bg-ink-4' : 'bg-positive')} />
+            {problems.length
+              ? (problems.length === 1 ? tx("1 thing needs your attention.") : tx("{value0} things need your attention.", { value0: problems.length }))
+              : summary.checking ? tx("Checking…") : tx("Everything you use is working.")}
+          </div>
+          <Button variant="ghost" size="sm" icon="refresh" onClick={() => setRefreshNonce((value) => value + 1)}>{tx("Check again")}</Button>
         </div>
-        <div className="mb-5 flex items-center justify-between gap-3 rounded-lg border border-line bg-card px-3 py-2.5">
-          <div className="min-w-0 text-[13px] text-ink-2">
-            {summary.total} {tx("checks across models, connectors, remote orchestration, terminals, and security.")}</div>
-          <Button variant="default" size="sm" icon="refresh" onClick={() => setRefreshNonce((value) => value + 1)}>{tx("Refresh")}</Button>
-        </div>
-        <div className="space-y-5">
-          {grouped.map((group) => (
-            <div key={group.area}>
-              <div className="mb-2 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.06em] text-ink-3">
-                <Icon name={group.area === 'models' ? 'cpu' : group.area === 'connectors' ? 'plug' : group.area === 'remote' ? 'monitor' : group.area === 'terminals' ? 'terminal' : 'shield'} size={13} />
-                {AREA_LABELS[group.area]}
-              </div>
-              <div className="overflow-hidden rounded-lg border border-line bg-card">
-                {group.checks.map((item, index) => (
-                  <div key={item.id} className={clsx('flex items-start gap-3 px-3 py-3', index > 0 && 'border-t border-line')}>
-                    {statusPill(item.status)}
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate text-[13px] font-medium text-ink">{item.title}</div>
-                      <div className="mt-0.5 text-[13px] leading-relaxed text-ink-3">{item.detail}</div>
-                    </div>
-                    {item.section && item.action && (
-                      <Button variant="ghost" size="sm" icon="arrowRight" onClick={() => jump(item.section)}>{item.action}</Button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        {problems.length > 0 && <CheckList checks={problems} jump={jump} />}
+        {passing.length > 0 && (
+          <div className="mt-4">
+            <button type="button" onClick={() => setShowPassing((value) => !value)} aria-expanded={showPassing} className="flex items-center gap-1.5 text-[13px] text-ink-3 transition-colors hover:text-ink-2">
+              <Icon name={showPassing ? 'chevronDown' : 'chevronRight'} size={12} />
+              {(passing.length === 1 ? tx("1 check passing") : tx("{value0} checks passing", { value0: passing.length }))}
+            </button>
+            {showPassing && <div className="mt-2"><CheckList checks={passing} jump={jump} /></div>}
+          </div>
+        )}
+        {notSetUp.length > 0 && (
+          <div className="mt-2">
+            <button type="button" onClick={() => setShowNotSetUp((value) => !value)} aria-expanded={showNotSetUp} className="flex items-center gap-1.5 text-[13px] text-ink-3 transition-colors hover:text-ink-2">
+              <Icon name={showNotSetUp ? 'chevronDown' : 'chevronRight'} size={12} />
+              {(notSetUp.length === 1 ? tx("1 optional feature not set up") : tx("{value0} optional features not set up", { value0: notSetUp.length }))}
+            </button>
+            {showNotSetUp && <div className="mt-2"><CheckList checks={notSetUp} jump={jump} /></div>}
+          </div>
+        )}
       </Section>
     </SettingsPane>
   )
 }
 
-function SummaryCell({ label, value, status }: { label: string; value: number; status: DoctorStatus }) {
-  const tx = useAuthoredText()
-  const meta = STATUS_META[status]
+function CheckList({ checks, jump }: { checks: DoctorCheck[]; jump: (section?: string) => void }) {
   return (
-    <div className={clsx('rounded-lg border px-3 py-2.5', meta.className)}>
-      <div className="text-[20px] font-semibold leading-none">{value}</div>
-      <div className="mt-1 text-[12px] font-medium">{label}</div>
+    <div className="space-y-4">
+      {areaGroups(checks).map((group) => (
+        <div key={group.area}>
+          <div className="mb-1 text-[12px] font-medium text-ink-3">{AREA_LABELS[group.area]}</div>
+          <div className="divide-y divide-line">
+            {group.checks.map((item) => (
+              <div key={item.id} className="flex items-start gap-2.5 py-2.5">
+                {statusDot(item.status)}
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-[13px] text-ink">{item.title}</div>
+                  <div className="mt-0.5 text-[13px] leading-relaxed text-ink-3">{item.detail}</div>
+                </div>
+                {item.section && item.action && (
+                  <Button variant="ghost" size="sm" onClick={() => jump(item.section)}>{item.action}</Button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   )
 }

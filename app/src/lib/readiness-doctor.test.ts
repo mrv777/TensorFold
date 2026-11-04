@@ -283,7 +283,7 @@ function remoteChecks(value: RemoteSnapshotProbeValue) {
     ],
   })
   const checks = buildReadinessDoctor({ settings, now })
-  assert.equal(find(checks, 'remote:off')?.status, 'warning', 'disabled host is a distinct state')
+  assert.equal(find(checks, 'remote:off')?.status, 'off', 'a disabled host is not set up, not a problem')
   assert.equal(find(checks, 'remote:naked')?.status, 'error', 'missing url/token is a distinct state')
 }
 
@@ -378,7 +378,7 @@ function remoteChecks(value: RemoteSnapshotProbeValue) {
 
 {
   const checks = buildReadinessDoctor({ settings: slackSettings({ enabled: false }), connectors: { status: 'ok', value: [connectorDef('slack', { lastSyncAt: now })] }, now })
-  assert.equal(find(checks, 'connector:slack')?.status, 'warning', 'disabled source is a distinct state even with live proof')
+  assert.equal(find(checks, 'connector:slack')?.status, 'off', 'a connector with no enabled sources is not set up, even with live proof')
   assert.ok(find(checks, 'connector:slack')?.detail.includes('none are enabled'))
 }
 

@@ -1,0 +1,18 @@
+{
+  "Nothing needs you right now. Approvals, running work and connector problems will show up here.": "Nada precisa de você agora. Aprovações, trabalho em andamento e problemas de conectores aparecerão aqui.",
+  "Knowledge": "Conhecimento",
+  "Show sidebar": "Mostrar a barra lateral",
+  "Show sidebar: projects, tasks and every tool": "Mostrar a barra lateral: projetos, tarefas e todas as ferramentas",
+  "Not working": "Não está funcionando",
+  "Not set up": "Não configurado",
+  "Checks for the models, connections and tools you use.": "Verificações dos modelos, conexões e ferramentas que você usa.",
+  "1 thing needs your attention.": "1 item precisa da sua atenção.",
+  "{value0} things need your attention.": "{value0} itens precisam da sua atenção.",
+  "Everything you use is working.": "Tudo o que você usa está funcionando.",
+  "Check again": "Verificar novamente",
+  "1 check passing": "1 verificação aprovada",
+  "{value0} checks passing": "{value0} verificações aprovadas",
+  "1 optional feature not set up": "1 recurso opcional não configurado",
+  "{value0} optional features not set up": "{value0} recursos opcionais não configurados",
+  "Loads when you send": "Carrega ao enviar"
+}

@@ -107,7 +107,7 @@ import {
 function doctorStatusTone(status: DoctorStatus): Tone {
   if (status === 'error') return 'critical'
   if (status === 'warning') return 'high'
-  if (status === 'checking') return 'low'
+  if (status === 'checking' || status === 'off') return 'low'
   return 'good'
 }
 
